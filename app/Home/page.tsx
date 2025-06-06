@@ -10,7 +10,6 @@ const Homepage = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main>
-<<<<<<< Updated upstream
         <div className="h-[110vh] xl:h-[70vh]">
           <Hero />
         </div>
@@ -18,15 +17,7 @@ const Homepage = () => {
           <CardHome />
         </div>
         <div className="h-[160vh] xl:h-[80vh]">
-=======
-        <div className="h-[150vh] xl:h-[90vh]">
-          <Hero />
-        </div>
-        <div className="h-[150vh] xl:h-[40vh]">
-          <CardHome />
-        </div>
-        <div className="h-[150vh] xl:h-[90vh]">
->>>>>>> Stashed changes
+
           <About />
         </div>
         <div className="h-[150vh] xl:h-[90vh]">
