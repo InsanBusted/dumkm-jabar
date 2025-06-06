@@ -13,13 +13,22 @@ model Umkm {
   ownerName   String
   category    String
   description String
-  location    String
+  locationId  String  @db.ObjectId
+  location    Wilayah  @relation(fields: [locationId], references: [id])
   contact     String
   imageUrl    String?
   status      Status   @default(PENDING)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model Wilayah {
+  id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  name  String
+  umkm  Umkm[]  // ✅ relasi balik ke Umkm
+}
+
+
 
 enum Status {
   PENDING

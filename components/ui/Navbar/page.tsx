@@ -10,7 +10,7 @@ import MobileNav from "./MobileNav";
 const links = [
   { title: "Home", path: "/" },
   { title: "Tentang", path: "/tentang" },
-  { title: "Ketentuan", path: "/ketentuan" },
+  { title: "Umkm", path: "/umkm" },
   {
     title: "Mentoring & Nilai",
     subLinks: [
@@ -110,7 +110,7 @@ const Nav = () => {
             );
           })}
           <Button className="font-semibold text-white">
-            <Link href="/sign-up">Daftar</Link>
+            <Link href="/daftar">Daftar</Link>
           </Button>
         </div>
 
