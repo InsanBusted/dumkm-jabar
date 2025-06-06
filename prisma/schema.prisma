@@ -1,20 +1,23 @@
-generator client {
-  provider = "prisma-client-js"
+datasource db {
+  provider  = "postgres"
+  url       = env("AUTH_POSTGRES_PRISMA_URL")
+  directUrl = env("AUTH_POSTGRES_URL_NON_POOLING")
 }
 
-datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 model Umkm {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(uuid())
   name        String
   ownerName   String
-  category    String
   description String
-  locationId  String  @db.ObjectId
+  locationId  String
   location    Wilayah  @relation(fields: [locationId], references: [id])
+  kategoriId  String
+  kategori    Kategori  @relation(fields: [kategoriId], references: [id])
   contact     String
   imageUrl    String?
   status      Status   @default(PENDING)
@@ -23,12 +26,15 @@ model Umkm {
 }
 
 model Wilayah {
-  id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  id    String  @id @default(uuid())
   name  String
-  umkm  Umkm[]  // ✅ relasi balik ke Umkm
+  umkm  Umkm[]
 }
-
-
+model Kategori {
+  id    String  @id @default(uuid())
+  name  String
+  umkm  Umkm[]
+}
 
 enum Status {
   PENDING
