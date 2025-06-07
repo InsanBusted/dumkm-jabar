@@ -1,9 +1,8 @@
 import Navbar from "@/app/(dashboard)/Navbar";
-import DetailUmkm from "@/components/DetailUmkm";
 import Footer from "@/components/Footer/page";
-import Product from "@/components/Home/Product/page";
+import UmkmDetailPage from "./UmkmDetail";
 
-type Props = { params: { slug: string } };
+type Props = { params: Promise<{ slug: string }> };
 
 const page = async ({ params }: Props) => {
   return (
@@ -11,10 +10,7 @@ const page = async ({ params }: Props) => {
       <Navbar />
       <main>
         <section>
-          <DetailUmkm params={params}  />
-        </section>
-        <section className="h-[80vh]">
-          <Product />
+          <UmkmDetailPage params={params} />
         </section>
       </main>
       <Footer />

@@ -1,6 +1,5 @@
 "use client";
 
-
 import { DataUmkm } from "@/app/type/DataUmkm";
 import {
   Card,
@@ -13,8 +12,6 @@ import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-
-
 
 type Props = {
   data: DataUmkm[];
@@ -56,32 +53,41 @@ export default function UmkmPage({ data }: Props) {
 
       <div className="flex flex-wrap justify-start gap-6 mt-3">
         {filtered.map((item) => (
-          <Card
-            key={item.id}
-            className="group w-[250px] text-black border border-gray-300 shadow-lg rounded-2xl transition-all duration-300 transform hover:translate-y-[-4px] hover:shadow-xl hover:border-transparent"
-          >
-            <CardHeader className="flex flex-col items-start gap-2 px-4 pt-2">
-              <div className="relative w-full h-50 rounded-2xl overflow-hidden">
-                <Image
-                  src={item.imageUrl || "/bakso.jpg"}
-                  alt={item.name}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <CardTitle className="text-2xl font-bold leading-tight">
-                {item.name}
-              </CardTitle>
-              <CardDescription className="text-gray-500">
-                {item.description}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="px-4 pb-4">
-              <p className="text-sm text-gray-700 mt-2 font-semibold">
-                {item.lokasi?.name} | <Link href={`https://wa.me/${item.contact}`} target="_blank" rel="noopener norefferer" className="text-blue-600 hover:text-black">Hubungi</Link>  
-              </p>
-            </CardContent>
-          </Card>
+          <div key={item.id}>
+            <Link href={`/umkm/${item.slug}`}>
+              <Card className="group w-[250px] text-black border border-gray-300 shadow-lg rounded-2xl transition-all duration-300 transform hover:translate-y-[-4px] hover:shadow-xl hover:border-transparent">
+                <CardHeader className="flex flex-col items-start gap-2 px-4 pt-2">
+                  <div className="relative w-full h-50 rounded-2xl overflow-hidden">
+                    <Image
+                      src={item.imageUrl || "/bakso.jpg"}
+                      alt={item.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <CardTitle className="text-xl font-bold leading-tight">
+                    {item.name}
+                  </CardTitle>
+                  <CardDescription className="text-gray-500">
+                    {item.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="px-4 pb-4">
+                  <p className="text-sm text-gray-700 mt-2 font-semibold">
+                    {item.lokasi?.name} |{" "}
+                    <Link
+                      href={`https://wa.me/${item.contact}`}
+                      target="_blank"
+                      rel="noopener norefferer"
+                      className="text-blue-600 hover:text-black"
+                    >
+                      Hubungi
+                    </Link>
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
         ))}
       </div>
     </div>
