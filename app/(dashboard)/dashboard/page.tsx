@@ -1,21 +1,23 @@
 import { redirect } from "next/navigation";
-import { auth } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 import DashboardPage from "@/components/Dashboard/DashboardClient";
 import Navbar from "../Navbar";
 import prisma from "@/lib/db/prisma";
 
 const Dashboard = async () => {
-  const { userId } = await auth();
+  const user = await currentUser();
 
-  if (!userId) {
+  if (!user) {
     redirect("/sign-in");
   }
 
-  const user = await prisma.user.findUnique({
-    where: { id: userId }, // ganti ke externalId jika perlu
+  const email = user.emailAddresses[0].emailAddress;
+
+  const dbUser = await prisma.user.findUnique({
+    where: { email },
   });
 
-  if (user?.role !== "ADMIN") {
+  if (dbUser?.role !== "ADMIN") {
     redirect("/dumkm-jabar");
   }
 

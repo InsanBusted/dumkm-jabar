@@ -1,5 +1,6 @@
 import Navbar from "@/app/(dashboard)/Navbar";
-import UmkmDetailPage from "./changeStatus";
+import DetailUmkm from "@/components/DetailUmkm";
+import Footer from "@/components/Footer/page";
 import Product from "@/components/Home/Product/page";
 
 type Props = { params: { slug: string } };
@@ -10,12 +11,13 @@ const page = async ({ params }: Props) => {
       <Navbar />
       <main>
         <section>
-          <UmkmDetailPage params={params} />
+          <DetailUmkm params={params}  />
         </section>
-        <section>
+        <section className="h-[80vh]">
           <Product />
         </section>
       </main>
+      <Footer />
     </div>
   );
 };

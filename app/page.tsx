@@ -15,7 +15,7 @@ export default async function Home() {
   return (
     <>
       <HeaderGuest />
-      <main className="flex h-screen flex-col items-center justify-center gap-6 px-6 text-center pt-[10rem] pb-[7rem]">
+      <main className="flex h-screen flex-col items-center justify-center gap-6 px-6 text-center pt-[30rem] pb-[25rem]">
         <div className="flex flex-col items-center gap-4">
           <Image
             src="/store.svg"

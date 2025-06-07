@@ -10,7 +10,7 @@ generator client {
 }
 
 model User {
-  id        String    @id @default(uuid())
+  id        String    @id 
   nama      String
   email     String    @unique
   role      Role      @default(USER)

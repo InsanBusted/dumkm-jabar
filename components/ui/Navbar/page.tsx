@@ -1,36 +1,54 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Button } from "../button";
 import MobileNav from "./MobileNav";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
-const links = [
-  { title: "Home", path: "/" },
-  { title: "Tentang", path: "/tentang" },
-  { title: "Umkm", path: "/umkm" },
-  { title: "Daftar", path: "/daftar" },
-];
-
 const Nav = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const [umkmSlug, setUmkmSlug] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchUmkmSlug() {
+      try {
+        const res = await fetch("/api/umkm-slug");
+        if (!res.ok) throw new Error("Fetch failed");
+        const data = await res.json();
+        setUmkmSlug(data.slug);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {
+        setUmkmSlug(null);
+      }
+    }
+
+    fetchUmkmSlug();
+  }, []);
+
+  const rawLinks = [
+    { title: "Home", path: "/" },
+    { title: "Tentang", path: "/tentang" },
+    { title: "Umkm", path: "/umkm" },
+    umkmSlug && { title: "Kelola Umkm", path: `/kelola-umkm/${umkmSlug}` },
+    { title: "Daftar", path: "/daftar" },
+  ].filter(Boolean) as { title: string; path: string }[];
 
   return (
     <nav className="w-full top-0 left-0 z-50 bg-transparent">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
         {/* Desktop Menu */}
         <div className="hidden md:flex gap-6 items-center">
-          {links.map((link) => {
+          {rawLinks.map((link) => {
             const isActive = pathname === link.path;
             return (
               <Link
                 key={link.path}
                 href={link.path}
-                className={`text-[1.3rem] px-2 py-1 rounded ${
+                className={`text-[1.3rem] px-2 py-1 rounded transition-all ${
                   isActive
                     ? "text-lokerlo font-semibold"
                     : "hover:bg-white hover:text-lokerlo font-semibold"
@@ -49,7 +67,6 @@ const Nav = () => {
           </SignedOut>
 
           <SignedIn>
-            
             <UserButton afterSignOutUrl="/" />
           </SignedIn>
         </div>
@@ -65,7 +82,7 @@ const Nav = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <MobileNav links={links} onClose={() => setMobileMenuOpen(false)} />
+        <MobileNav links={rawLinks} onClose={() => setMobileMenuOpen(false)} />
       )}
     </nav>
   );

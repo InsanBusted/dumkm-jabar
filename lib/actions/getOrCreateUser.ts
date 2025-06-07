@@ -7,10 +7,11 @@ export async function getOrCreateUser() {
   const user = await currentUser();
   if (!user) throw new Error("Unauthorized");
 
+  const id = user.id;
   const email = user.emailAddresses[0].emailAddress;
   const firstName = user.firstName ?? "";
   const lastName = user.lastName ?? "";
-  const fullName = `${firstName} ${lastName}`.trim(); 
+  const fullName = `${firstName} ${lastName}`.trim();
 
   const dbUser = await prisma.user.upsert({
     where: { email },
@@ -18,6 +19,7 @@ export async function getOrCreateUser() {
       nama: fullName,
     },
     create: {
+      id,
       email,
       nama: fullName || "Pengguna",
       role: "USER",

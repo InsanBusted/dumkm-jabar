@@ -5,7 +5,7 @@ import { TypeAnimation } from "react-type-animation";
 export default function TypingText() {
   return (
     <div className="h-[100vh] xl:h-[20vh]">
-      <p className="max-w-4xl text-gray-700 text-lg sm:text-xl leading-relaxed font-medium tracking-wide text-justify h-[45vh]">
+      <p className="max-w-4xl text-gray-700 text-lg sm:text-xl leading-relaxed font-medium tracking-wide text-justify h-[35vh]">
         <TypeAnimation
           sequence={[
             // ketik seluruh paragraf sekaligus

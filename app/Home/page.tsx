@@ -17,7 +17,6 @@ const Homepage = () => {
           <CardHome />
         </div>
         <div className="h-[160vh] xl:h-[80vh]">
-
           <About />
         </div>
         <div className="h-[150vh] xl:h-[90vh]">
