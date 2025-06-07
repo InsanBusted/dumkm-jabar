@@ -3,6 +3,7 @@
 import prisma from "../db/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { createProductSchema } from "../validation/formProduct";
+import slugify from "slugify";
 
 export async function addProductAction(formData: FormData) {
   const clerkUser = await currentUser();
@@ -47,10 +48,24 @@ export async function addProductAction(formData: FormData) {
     return { success: false, error: "Data tidak valid: " + errors };
   }
 
+  const slug = slugify(validated.data.name, { lower: true, strict: true });
+
+  const existingSlug = await prisma.umkm.findUnique({
+    where: { slug },
+  });
+  if (existingSlug) {
+    return {
+      success: false,
+      error: "Nama Produk sudah digunakan, mohon gunakan nama lain.",
+    };
+  }
   // Simpan product ke DB
   try {
     await prisma.product.create({
-      data: validated.data,
+      data: {
+        ...validated.data,
+        slug,
+      },
     });
     return { success: true };
   } catch (error) {
@@ -92,7 +107,7 @@ export async function getProduct() {
       umkmId: userUmkm.id,
     },
     include: {
-      umkm: true, 
+      umkm: true,
     },
 
     orderBy: {
