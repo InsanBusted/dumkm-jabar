@@ -20,17 +20,17 @@ const Footer = () => {
             <ul className="space-y-1 text-sm text-gray-300">
               <li>
                 <Link href="/" className="hover:underline">
-                  Beranda
+                  Home
                 </Link>
               </li>
               <li>
-                <Link href="/layanan" className="hover:underline">
-                  Layanan
+                <Link href="/about" className="hover:underline">
+                  About
                 </Link>
               </li>
               <li>
-                <Link href="/portfolio" className="hover:underline">
-                  Portfolio
+                <Link href="/umkm" className="hover:underline">
+                  Umkm
                 </Link>
               </li>
               <li>

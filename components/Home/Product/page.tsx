@@ -9,10 +9,9 @@ import {
 } from "@/components/ui/card";
 
 import { Store } from "lucide-react";
-
-import { useRef } from "react";
-import { ChevronLeft, ChevronRight, Utensils } from "lucide-react";
+import { Utensils } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const data = [
   {
@@ -45,31 +44,17 @@ const data = [
     description: "Sangat lumer dan nikmat",
     name: "Bustech",
   },
-  {
-    image: "/risol-mayo.jpg",
-    title: "Risol Mayo",
-    description: "Sangat lumer dan nikmat",
-    name: "Bustech",
-  },
-  {
-    image: "/risol-mayo.jpg",
-    title: "Risol Mayo",
-    description: "Sangat lumer dan nikmat",
-    name: "Bustech",
-  },
 ];
 
 const Product = () => {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
-  const scroll = (offset: number) => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: offset, behavior: "smooth" });
-    }
+  const handleSeeMoreClick = () => {
+    router.push("/product");
   };
 
   return (
-    <section className="w-[80vw] max-w-7xl mx-auto bg-white pt-[3rem]">
+    <section className="w-[80vw] mx-auto bg-white pt-[3rem]">
       <div className="relative bg-black rounded-2xl shadow-lg py-5 px-6">
         {/* Title */}
         <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 text-center xl:text-left flex items-center gap-3">
@@ -77,33 +62,13 @@ const Product = () => {
           Produk UMKM
         </h1>
 
-        {/* Navigation Buttons */}
-        <button
-          onClick={() => scroll(-300)}
-          title="Scroll kiri"
-          className="absolute top-1/2 -translate-y-1/2 left-2 z-10 cursor-pointer bg-black text-white p-2 rounded-full hover:bg-gray-200 hover:text-black transition shadow"
-        >
-          <ChevronLeft />
-        </button>
-        <button
-          onClick={() => scroll(300)}
-          title="Scroll kanan"
-          className="absolute top-1/2 -translate-y-1/2 right-2 z-10 cursor-pointer bg-black text-white p-2 rounded-full hover:bg-gray-200 hover:text-black transition shadow"
-        >
-          <ChevronRight />
-        </button>
-
         {/* Scrollable Product Cards */}
-        <div
-          ref={scrollRef}
-          className="flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide py-4 px-7"
-        >
+        <div className="flex gap-6 overflow-x-auto scroll-smooth scrollbar-hide py-4 px-7">
           {data.map((item, index) => {
-
             return (
               <Card
                 key={index}
-                className="min-w-[220px] bg-white flex-shrink-0 shadow-md"
+                className="min-w-[250px] bg-white flex-shrink-0 shadow-md"
               >
                 <CardHeader>
                   <Image
@@ -118,18 +83,18 @@ const Product = () => {
                 <CardContent className="px-3 pb-4">
                   {/* Judul dengan ikon */}
                   <div className="flex items-center gap-2">
-                    <CardTitle className="text-base font-semibold text-black">
+                    <CardTitle className="text-lg font-semibold text-black">
                       {item.title}
                     </CardTitle>
                   </div>
 
                   {/* Deskripsi */}
-                  <CardDescription className="text-sm text-gray-600 mt-1">
+                  <CardDescription className="text-md text-gray-600 mt-1">
                     {item.description}
                   </CardDescription>
 
                   {/* Nama UMKM dengan ikon branding */}
-                  <div className="flex items-center gap-1 mt-3 text-xs text-gray-700 font-medium">
+                  <div className="flex items-center gap-1 mt-3 text-sm text-gray-700 font-medium">
                     <Store className="w-4 h-4 text-black" />
                     {item.name}
                   </div>
@@ -137,6 +102,22 @@ const Product = () => {
               </Card>
             );
           })}
+
+          {/* Card Terakhir: Lihat lebih banyak produk */}
+          <Card
+            onClick={handleSeeMoreClick}
+            className="min-w-[250px] bg-white flex-shrink-0 shadow-md cursor-pointer relative overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-white/70 backdrop-blur-sm z-10 rounded-xl"></div>
+            <CardContent className="px-3 pb-4 relative z-20 flex flex-col justify-center items-center h-full text-center">
+              <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                Lihat lebih banyak produk
+              </h2>
+              <p className="text-gray-600 text-sm">
+                Klik untuk melihat seluruh produk UMKM kami
+              </p>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </section>

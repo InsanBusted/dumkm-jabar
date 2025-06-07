@@ -11,7 +11,7 @@ import SilentUserInit from "@/components/SilentUserInit";
 
 const links = [
   { title: "Home", path: "/" },
-  { title: "Tentang", path: "/tentang" },
+  { title: "About", path: "/about" },
   { title: "Umkm", path: "/umkm" },
   { title: "Daftar", path: "/daftar" },
 ];
