@@ -42,3 +42,14 @@ export async function getAllUmkm(): Promise<DataUmkm[]> {
     return [];
   }
 }
+
+export async function getUmkm(slug: string) {
+  const umkm = await prisma.umkm.findUnique({
+    where: { slug },
+    include: { kategori: true, location: true },
+  });
+
+  if (!umkm) throw new Error("UMKM not found");
+
+  return umkm;
+}

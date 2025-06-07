@@ -2,9 +2,7 @@ import Navbar from "@/app/(dashboard)/Navbar";
 import UmkmDetailPage from "./changeStatus";
 import Product from "@/components/Home/Product/page";
 
-type Props = { params: { slug: string } };
-
-const page = async ({ params }: Props) => {
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   return (
     <div>
       <Navbar />
@@ -18,6 +16,4 @@ const page = async ({ params }: Props) => {
       </main>
     </div>
   );
-};
-
-export default page;
+}

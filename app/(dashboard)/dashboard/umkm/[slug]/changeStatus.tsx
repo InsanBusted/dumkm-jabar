@@ -14,8 +14,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default async function UmkmDetailPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export default async function UmkmDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
 
   const umkm = await prisma.umkm.findUnique({
     where: { slug },
@@ -29,7 +33,10 @@ export default async function UmkmDetailPage({ params }: { params: { slug: strin
   async function onSubmit(formData: FormData) {
     "use server";
 
-    const status = formData.get("status") as "PENDING" | "APPROVED" | "REJECTED";
+    const status = formData.get("status") as
+      | "PENDING"
+      | "APPROVED"
+      | "REJECTED";
     if (!status) throw new Error("Status wajib diisi");
 
     await updateUmkmStatus(umkmId, status);
@@ -55,10 +62,19 @@ export default async function UmkmDetailPage({ params }: { params: { slug: strin
 
         {/* Detail di kanan */}
         <div className="flex-1 space-y-4">
-          <p><span className="font-semibold">Owner:</span> {umkm.ownerName}</p>
-          <p><span className="font-semibold">Kategori:</span> {umkm.kategori.name}</p>
-          <p><span className="font-semibold">Wilayah:</span> {umkm.location.name}</p>
-          <p><span className="font-semibold">Kontak:</span> {umkm.contact}</p>
+          <p>
+            <span className="font-semibold">Owner:</span> {umkm.ownerName}
+          </p>
+          <p>
+            <span className="font-semibold">Kategori:</span>{" "}
+            {umkm.kategori.name}
+          </p>
+          <p>
+            <span className="font-semibold">Wilayah:</span> {umkm.location.name}
+          </p>
+          <p>
+            <span className="font-semibold">Kontak:</span> {umkm.contact}
+          </p>
           <p className="text-gray-800">{umkm.description}</p>
           <p className="text-sm text-gray-500">
             Status: <span className="font-semibold">{umkm.status}</span>

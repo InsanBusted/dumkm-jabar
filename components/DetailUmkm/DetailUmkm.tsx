@@ -4,14 +4,14 @@ import Image from "next/image";
 import { CheckCircle, Clock, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils"; // pastikan kamu punya helper cn, atau bisa ganti dengan template literal biasa
 
-interface PageProps {
-  params: {
-    slug: string;
-  };
-}
 
-export default async function DetailUmkm({ params }: PageProps) {
-  const { slug } = await params;
+export default async function DetailUmkm({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
 
   const umkm = await prisma.umkm.findUnique({
     where: { slug },
@@ -53,7 +53,7 @@ export default async function DetailUmkm({ params }: PageProps) {
   const statusInfo = getStatusInfo(umkm.status);
 
   return (
-    <div className="p-6 w-full max-w-5xl mx-auto animate-fadeIn">
+    <div className="p-6 w-full max-w-5xl mx-auto animate-fadeIn pt-[10rem]">
       <h1 className="text-3xl font-bold mb-6 text-center text-primary transition-all duration-500 ease-in-out">
         {umkm.name}
       </h1>
