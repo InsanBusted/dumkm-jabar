@@ -5,13 +5,13 @@ import Header from '@/components/Header/page';
 import Jumbotron from '@/components/Jumbotron/page';
 import React from 'react'
 
-const About = () => {
+const Tentang = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main>
         <section className="h-[65vh] xl:h-[60vh]">
-          <Jumbotron link="About" />
+          <Jumbotron link="tentang" />
         </section>
         <section className="h-[65vh] xl:h-[70vh]">
           <Detail />
@@ -25,4 +25,4 @@ const About = () => {
   );
 }
 
-export default About
+export default Tentang
