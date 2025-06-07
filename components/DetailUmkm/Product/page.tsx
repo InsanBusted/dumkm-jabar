@@ -39,9 +39,11 @@ type FormValues = {
   imageUrl: string;
 };
 
-const products = await getProduct();
+type ProductProps = {
+  products: Awaited<ReturnType<typeof getProduct>>;
+};
 
-const Product = () => {
+const Product = ({ products }: ProductProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -85,11 +87,9 @@ const Product = () => {
 
       if (uploadError) throw uploadError;
 
-      const { data: publicData, error: publicError } = await supabase.storage
+      const { data: publicData } = await supabase.storage
         .from("dumkm")
         .getPublicUrl(data.path);
-
-      if (publicError) throw publicError;
 
       setValue("imageUrl", publicData.publicUrl);
     } catch (error) {
@@ -286,7 +286,7 @@ const Product = () => {
             >
               <div className="relative w-full h-[150px] overflow-hidden">
                 <Image
-                  src={item.imageUrl}
+                  src={item.imageUrl!}
                   alt={item.name}
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
@@ -306,7 +306,7 @@ const Product = () => {
                     target="_blank"
                     className="text-green-600 hover:underline"
                   >
-                    Hubungi 
+                    Hubungi
                   </Link>
                 </CardFooter>
               </CardHeader>
