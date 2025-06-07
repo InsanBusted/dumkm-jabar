@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import { Button } from "../button";
 import MobileNav from "./MobileNav";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import SilentUserInit from "@/components/SilentUserInit";
 
 const links = [
   { title: "Home", path: "/" },
@@ -50,7 +49,7 @@ const Nav = () => {
           </SignedOut>
 
           <SignedIn>
-            <SilentUserInit />
+            
             <UserButton afterSignOutUrl="/" />
           </SignedIn>
         </div>
