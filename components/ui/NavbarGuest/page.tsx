@@ -4,16 +4,12 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { Button } from "../button";
 import MobileNav from "./MobileNav";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import SilentUserInit from "@/components/SilentUserInit";
 
 const links = [
   { title: "Home", path: "/" },
   { title: "Tentang", path: "/tentang" },
   { title: "Umkm", path: "/umkm" },
-  { title: "Daftar", path: "/daftar" },
 ];
 
 const Nav = () => {
@@ -41,18 +37,6 @@ const Nav = () => {
               </Link>
             );
           })}
-
-          {/* Auth Section */}
-          <SignedOut>
-            <Button className="font-semibold text-white">
-              <Link href="/sign-in">Login</Link>
-            </Button>
-          </SignedOut>
-
-          <SignedIn>
-            <SilentUserInit />
-            <UserButton afterSignOutUrl="/" />
-          </SignedIn>
         </div>
 
         {/* Mobile Menu Button */}

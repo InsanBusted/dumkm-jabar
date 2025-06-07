@@ -2,8 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Button } from "../button";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 interface MobileMenuProps {
   links: {
@@ -18,7 +16,7 @@ const MobileNav = ({ links, onClose }: MobileMenuProps) => {
   const pathname = usePathname();
 
   return (
-    <div className="absolute mt-5 top-16 right-4 z-50 bg-white p-4 rounded-md w-60 md:hidden">
+    <div className="absolute mt-2 top-16 right-4 z-50 bg-white p-4 rounded-md w-64 shadow-lg md:hidden">
       <ul className="flex flex-col gap-2">
         {links.map((link) => (
           <li key={link.path || link.title}>
@@ -42,10 +40,10 @@ const MobileNav = ({ links, onClose }: MobileMenuProps) => {
                       <Link
                         href={subLink.path}
                         onClick={onClose}
-                        className={`block px-2 py-1 text-sm ${
+                        className={`block px-2 py-1 text-sm rounded ${
                           pathname === subLink.path
                             ? "text-lokerlo font-semibold"
-                            : "text-black"
+                            : "text-black hover:bg-gray-100"
                         }`}
                       >
                         {subLink.title}
@@ -58,10 +56,10 @@ const MobileNav = ({ links, onClose }: MobileMenuProps) => {
               <Link
                 href={link.path || "#"}
                 onClick={onClose}
-                className={`block px-2 py-1 font-medium ${
+                className={`block px-2 py-1 text-[1.1rem] rounded font-semibold ${
                   pathname === link.path
-                    ? "text-lokerlo font-semibold"
-                    : "text-black"
+                    ? "text-lokerlo"
+                    : "text-black hover:bg-gray-100"
                 }`}
               >
                 {link.title}
@@ -70,21 +68,6 @@ const MobileNav = ({ links, onClose }: MobileMenuProps) => {
           </li>
         ))}
       </ul>
-
-      {/* Auth Section */}
-      <div className="mt-3">
-        <SignedOut>
-          <Button className="font-semibold text-white w-full" onClick={onClose}>
-            <Link href="/sign-in">Login</Link>
-          </Button>
-        </SignedOut>
-
-        <SignedIn>
-          <div className="flex justify-end">
-            <UserButton afterSignOutUrl="/" />
-          </div>
-        </SignedIn>
-      </div>
     </div>
   );
 };

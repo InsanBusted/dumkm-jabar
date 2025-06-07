@@ -9,20 +9,45 @@ generator client {
   previewFeatures = ["driverAdapters"]
 }
 
+model User {
+  id        String    @id @default(uuid())
+  nama      String
+  email     String    @unique
+  role      Role      @default(USER)
+  umkms     Umkm[]
+}
+
 model Umkm {
-  id          String   @id @default(uuid())
+  id          String     @id @default(uuid())
   name        String
+  slug        String     @unique
   ownerName   String
   description String
   locationId  String
-  location    Wilayah  @relation(fields: [locationId], references: [id])
+  location    Wilayah    @relation(fields: [locationId], references: [id])
   kategoriId  String
-  kategori    Kategori  @relation(fields: [kategoriId], references: [id])
+  kategori    Kategori   @relation(fields: [kategoriId], references: [id])
   contact     String
   imageUrl    String?
-  status      Status   @default(PENDING)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  status      Status     @default(PENDING)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  userId      String
+  user        User       @relation(fields: [userId], references: [id])
+
+  products    Product[]
+}
+
+model Product {
+  id        String   @id @default(uuid())
+  name      String
+  deskripsi String
+  price     Float
+  imageUrl  String?
+  umkmId    String
+  umkm      Umkm     @relation(fields: [umkmId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 model Wilayah {
@@ -30,6 +55,7 @@ model Wilayah {
   name  String
   umkm  Umkm[]
 }
+
 model Kategori {
   id    String  @id @default(uuid())
   name  String
@@ -40,4 +66,9 @@ enum Status {
   PENDING
   APPROVED
   REJECTED
+}
+
+enum Role {
+  USER
+  ADMIN
 }
