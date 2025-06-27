@@ -46,10 +46,7 @@ const ProductCard = ({ product, onEdit }: ProductCardProps) => {
   };
 
   return (
-    <Card
-      className="min-w-[250px] bg-white flex-shrink-0 cursor-pointer"
-      onClick={() => router.push("/product")}
-    >
+    <Card className="min-w-[250px] bg-white flex-shrink-0 cursor-pointer">
       <div className="relative w-full h-50 rounded-2xl overflow-hidden">
         {product.imageUrl ? (
           <Image

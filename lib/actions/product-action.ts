@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use server";
 
 import prisma from "../db/prisma";
@@ -6,6 +5,8 @@ import { currentUser } from "@clerk/nextjs/server";
 import { createProductSchema } from "../validation/formProduct";
 // import { DataProduct } from "@/app/type/DataProduct";
 import slugify from "slugify";
+import { getEmbedding } from "../embedding";
+import { productIndex } from "../db/pinecone";
 
 export async function addProductAction(formData: FormData) {
   const clerkUser = await currentUser();
@@ -18,7 +19,6 @@ export async function addProductAction(formData: FormData) {
     return { success: false, error: "Email user tidak ditemukan" };
   }
 
-  // Cari user di DB
   const dbUser = await prisma.user.findUnique({
     where: { email },
   });
@@ -26,7 +26,6 @@ export async function addProductAction(formData: FormData) {
     return { success: false, error: "User tidak ditemukan di database" };
   }
 
-  // Cari UMKM milik user, ambil yang pertama
   const userUmkm = await prisma.umkm.findFirst({
     where: { userId: dbUser.id },
   });
@@ -34,7 +33,6 @@ export async function addProductAction(formData: FormData) {
     return { success: false, error: "UMKM milik user tidak ditemukan" };
   }
 
-  // Ambil data dari form, price di-convert ke number dulu
   const rawData = {
     name: formData.get("name")?.toString() || "",
     deskripsi: formData.get("deskripsi")?.toString() || "",
@@ -43,7 +41,6 @@ export async function addProductAction(formData: FormData) {
     umkmId: userUmkm.id,
   };
 
-  // Validasi data
   const validated = createProductSchema.safeParse(rawData);
   if (!validated.success) {
     const errors = validated.error.errors.map((e) => e.message).join(", ");
@@ -61,14 +58,37 @@ export async function addProductAction(formData: FormData) {
       error: "Nama Produk sudah digunakan, mohon gunakan nama lain.",
     };
   }
-  // Simpan product ke DB
+
   try {
-    await prisma.product.create({
+    const newProduct = await prisma.product.create({
       data: {
         ...validated.data,
         slug,
       },
     });
+
+    const combinedText = [
+      validated.data.name,
+      validated.data.deskripsi,
+      `Harga: Rp${validated.data.price}`,
+      `UMKM: ${userUmkm.name}`,
+    ].join("\n");
+
+    const vector = await getEmbedding(combinedText);
+
+    await productIndex.upsert([
+      {
+        id: newProduct.id,
+        values: vector,
+        metadata: {
+          namaProduk: newProduct.name,
+          harga: newProduct.price,
+          umkm: userUmkm.name,
+          pageContent: combinedText,
+        },
+      },
+    ]);
+
     return { success: true };
   } catch (error) {
     console.error("DB error:", error);
@@ -126,21 +146,16 @@ export async function getAllProduct() {
         createdAt: "desc",
       },
       include: {
-        umkm: true,
+        umkm: {
+          select: {
+            contact: true,
+            name: true,
+          },
+        },
       },
     });
 
-
-    return products.map((product) => ({
-      id: product.id,
-      name: product.name,
-      slug: product.slug,
-      deskripsi: product.deskripsi,
-      price: product.price,
-      imageUrl: product.imageUrl ?? "",
-      umkm: product.umkm.name,
-      createdAt: product.createdAt,
-    }));
+    return products;
   } catch (error) {
     console.error("Prisma Error:", JSON.stringify(error, null, 2));
     return [];
@@ -149,18 +164,50 @@ export async function getAllProduct() {
 
 export async function updateProductAction(id: string, data: FormData) {
   try {
+    const name = data.get("name") as string;
+    const deskripsi = data.get("deskripsi") as string;
+    const price = parseFloat(data.get("price") as string);
+    const imageUrl = data.get("imageUrl") as string;
+
+    // Update ke database
     const updated = await prisma.product.update({
       where: { id },
       data: {
-        name: data.get("name") as string,
-        deskripsi: data.get("deskripsi") as string,
-        price: parseFloat(data.get("price") as string),
-        imageUrl: data.get("imageUrl") as string,
+        name,
+        deskripsi,
+        price,
+        imageUrl,
+      },
+      include: {
+        umkm: true,
       },
     });
 
+    const combinedText = [
+      updated.name,
+      updated.deskripsi,
+      `Harga: Rp${updated.price}`,
+      `UMKM: ${updated.umkm.name}`,
+    ].join("\n");
+
+    const vector = await getEmbedding(combinedText);
+
+    await productIndex.upsert([
+      {
+        id: updated.id,
+        values: vector,
+        metadata: {
+          namaProduk: updated.name,
+          harga: updated.price,
+          umkm: updated.umkm.name,
+          pageContent: combinedText,
+        },
+      },
+    ]);
+
     return { success: true, data: updated };
   } catch (error) {
+    console.error("Update Product Error:", error);
     return { success: false, error: "Gagal update produk" };
   }
 }

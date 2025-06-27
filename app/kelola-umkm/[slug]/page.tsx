@@ -43,7 +43,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
   if (!umkm) return notFound();
 
-  const products = await getProduct(umkm.id);
+  const products = await getProduct();
 
   return (
     <div>
@@ -52,7 +52,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
         <section>
           <DetailUmkm umkm={umkm} />
         </section>
-        <section className="h-[80vh]">
+        <section className="h-[80vh] mb-[7rem]">
           <Product products={products} />
         </section>
       </main>

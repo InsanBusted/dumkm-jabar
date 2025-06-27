@@ -7,47 +7,42 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { getAllProduct } from "@/lib/actions/product-action";
 
-import { Store } from "lucide-react";
-import { Utensils } from "lucide-react";
+import { Store, Utensils, Search } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-const data = [
-  {
-    image: "/risol-mayo.jpg",
-    title: "Risol Mayo",
-    description: "Sangat lumer dan nikmat",
-    name: "Bustech",
-  },
-  {
-    image: "/chicken-katsu.jpg",
-    title: "Chicken Katsu",
-    description: "Gurih dan mantap",
-    name: "Bustech",
-  },
-  {
-    image: "/risol-mayo.jpg",
-    title: "Risol Mayo",
-    description: "Sangat lumer dan nikmat",
-    name: "Bustech",
-  },
-  {
-    image: "/chicken-katsu.jpg",
-    title: "Chicken Katsu",
-    description: "Gurih dan mantap",
-    name: "Bustech",
-  },
-  {
-    image: "/risol-mayo.jpg",
-    title: "Risol Mayo",
-    description: "Sangat lumer dan nikmat",
-    name: "Bustech",
-  },
-];
+type ProductType = {
+  id: string;
+  name: string;
+  deskripsi: string;
+  imageUrl: string | null;
+  slug: string;
+  umkm: {
+    name: string;
+    contact: string;
+  };
+};
 
 const Product = () => {
   const router = useRouter();
+  const [search, setSearch] = useState("");
+  const [products, setProducts] = useState<ProductType[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getAllProduct();
+      setProducts(result);
+    };
+    fetchData();
+  }, []);
+
+  const filtered = products.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   const handleSeeMoreClick = () => {
     router.push("/product");
@@ -62,48 +57,72 @@ const Product = () => {
           Produk UMKM
         </h1>
 
+        {/* Search Bar */}
+        <div className="max-w-md mx-auto xl:mx-0 mb-4">
+          <form
+            onSubmit={(e) => e.preventDefault()}
+            className="flex items-center border border-gray-300 rounded-full overflow-hidden shadow-sm focus-within:ring-2 focus-within:ring-white bg-white"
+          >
+            <input
+              type="text"
+              placeholder="Cari produk..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="flex-grow px-4 py-2 text-gray-700 placeholder-gray-400 focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="bg-black text-white px-5 py-2 rounded-r-full cursor-pointer"
+            >
+              <Search className="w-5 h-5" />
+            </button>
+          </form>
+        </div>
+
         {/* Scrollable Product Cards */}
         <div className="flex gap-6 overflow-x-auto scroll-smooth scrollbar-hide py-4 px-7">
-          {data.map((item, index) => {
-            return (
-              <Card
-                key={index}
-                className="min-w-[250px] bg-white flex-shrink-0 shadow-md"
-              >
-                <CardHeader>
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    width={300}
-                    height={200}
-                    className="w-full h-40 object-cover rounded-xl"
-                  />
-                </CardHeader>
+          {filtered.map((item) => (
+            <Card
+              key={item.id}
+              className="min-w-[250px] bg-white flex-shrink-0 shadow-md"
+            >
+              <CardHeader>
+                <Image
+                  src={item.imageUrl || "/placeholder.jpg"} // fallback jika null
+                  alt={item.name}
+                  width={300}
+                  height={200}
+                  className="w-full h-40 object-cover rounded-xl"
+                />
+              </CardHeader>
 
-                <CardContent className="px-3 pb-4">
-                  {/* Judul dengan ikon */}
-                  <div className="flex items-center gap-2">
-                    <CardTitle className="text-lg font-semibold text-black">
-                      {item.title}
-                    </CardTitle>
-                  </div>
-
-                  {/* Deskripsi */}
-                  <CardDescription className="text-md text-gray-600 mt-1">
-                    {item.description}
-                  </CardDescription>
-
-                  {/* Nama UMKM dengan ikon branding */}
-                  <div className="flex items-center gap-1 mt-3 text-sm text-gray-700 font-medium">
-                    <Store className="w-4 h-4 text-black" />
+              <CardContent className="px-3 pb-4">
+                <div className="flex items-center gap-2">
+                  <CardTitle className="text-lg font-semibold text-black">
                     {item.name}
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
+                  </CardTitle>
+                </div>
+                <CardDescription className="text-md text-gray-600 mt-1">
+                  {item.deskripsi}
+                </CardDescription>
+                <div className="mt-3 text-sm text-gray-500">
+                  <Link
+                    href={`https://wa.me/${item.umkm?.contact}?text=Halo%20saya%20tertarik%20dengan%20product%20kamu`}
+                    target="_blank"
+                    className="text-green-600 hover:underline"
+                  >
+                    Hubungi
+                  </Link>
+                </div>
+                <div className="flex items-center gap-1 mt-3 text-sm text-gray-700 font-medium">
+                  <Store className="w-4 h-4 text-black" />
+                  {item.umkm?.name ?? "-"}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
 
-          {/* Card Terakhir: Lihat lebih banyak produk */}
+          {/* Card terakhir: Lihat lebih banyak */}
           <Card
             onClick={handleSeeMoreClick}
             className="min-w-[250px] bg-white flex-shrink-0 shadow-md cursor-pointer relative overflow-hidden"

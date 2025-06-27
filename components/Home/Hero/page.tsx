@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -15,7 +16,7 @@ const Hero = () => {
             melalui teknologi.
           </p>
           <Button className="mt-3 bg-white text-black cursor-pointer hover:text-white py-5">
-            Cari UMKM
+            <Link href="/umkm">Cari Umkm</Link>
           </Button>
         </div>
 

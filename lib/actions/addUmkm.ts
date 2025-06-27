@@ -4,6 +4,8 @@ import { createFormSchema } from "@/lib/validation/formDaftar";
 import prisma from "../db/prisma";
 import slugify from "slugify";
 import { currentUser } from "@clerk/nextjs/server";
+import { getEmbedding } from "../embedding";
+import { umkmIndex } from "../db/pinecone";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function submitUmkm(prevState: any, formData: FormData) {
@@ -79,7 +81,7 @@ export async function submitUmkm(prevState: any, formData: FormData) {
       };
     }
 
-    await prisma.umkm.create({
+    const newUmkm = await prisma.umkm.create({
       data: {
         name: validated.data.name,
         slug,
@@ -93,6 +95,32 @@ export async function submitUmkm(prevState: any, formData: FormData) {
         status: "PENDING",
       },
     });
+
+    // Buat konten gabungan untuk embedding
+    const combinedText = [
+      `UMKM: ${newUmkm.name}`,
+      `Pemilik: ${newUmkm.ownerName}`,
+      `Deskripsi: ${newUmkm.description}`,
+      `Kategori: ${kategori.name}`,
+      `Wilayah: ${wilayah.name}`,
+      `Kontak: ${newUmkm.contact}`,
+    ].join("\n");
+
+    const vector = await getEmbedding(combinedText);
+
+    await umkmIndex.upsert([
+      {
+        id: newUmkm.id,
+        values: vector,
+        metadata: {
+          namaUMKM: newUmkm.name,
+          pemilik: newUmkm.ownerName,
+          lokasi: wilayah.name,
+          kategori: kategori.name,
+          pageContent: combinedText,
+        },
+      },
+    ]);
 
     return { success: true };
   } catch (error) {

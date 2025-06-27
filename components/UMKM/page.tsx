@@ -25,7 +25,7 @@ export default function UmkmPage({ data }: Props) {
   );
 
   return (
-    <div className="relative py-5 px-6">
+    <div className="relative pb-5 px-6">
       <h1 className="text-3xl md:text-4xl font-bold text-black mb-6 text-center xl:text-left flex items-center gap-3">
         Daftar Nama UMKM
       </h1>

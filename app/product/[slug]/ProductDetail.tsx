@@ -19,7 +19,7 @@ export default async function ProductDetailPage({
   return (
     <div>
       <main>
-        <section className="min-h-screen pt-10 p-6 w-[80vw] mx-auto">
+        <section className="min-h-screen pt-10 p-6 xl:w-[80vw] w-[95vw] mx-auto">
           <h1 className="text-2xl font-bold mb-4">{product.name}</h1>
           <div className="flex flex-col md:flex-row gap-8">
             {product.imageUrl && (

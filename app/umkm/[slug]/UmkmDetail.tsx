@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import prisma from "@/lib/db/prisma";
 import Image from "next/image";
 import { BadgeCheck, Phone, MapPin, User, Tag, Info } from "lucide-react"; // pastikan sudah terinstal
+import Link from "next/link";
 
 export default async function UmkmDetailPage({
   params,
@@ -18,7 +19,7 @@ export default async function UmkmDetailPage({
   if (!umkm) return notFound();
 
   return (
-    <section className="bg-gray-50 min-h-screen py-10">
+    <section className="bg-gray-50 py-10">
       <div className="w-[90vw] md:w-[80vw] mx-auto bg-white p-6 rounded-xl shadow-lg">
         <h1 className="text-3xl text-center md:text-start font-bold mb-6 border-b pb-2">
           {umkm.name}
@@ -62,13 +63,13 @@ export default async function UmkmDetailPage({
             <p className="flex items-center gap-2">
               <Phone className="w-5 h-5 text-indigo-600" />
               <span className="font-semibold">Kontak:</span>{" "}
-              <a
+              <Link
                 href={`https://wa.me/${umkm.contact}`}
                 target="_blank"
                 className="text-indigo-700 underline"
               >
                 {umkm.contact}
-              </a>
+              </Link>
             </p>
 
             <p className="flex items-start gap-2">
@@ -96,6 +97,5 @@ export default async function UmkmDetailPage({
         </div>
       </div>
     </section>
-    
   );
 }

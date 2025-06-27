@@ -4,7 +4,8 @@ export type DataProduct = {
   slug: string;
   deskripsi: string;
   price: number;
-  imageUrl?: string;
-  umkm: string;
+  imageUrl?: string | null;
+  umkmId: string;
+  umkm: { name: string; contact: string };
   createdAt: Date;
 };

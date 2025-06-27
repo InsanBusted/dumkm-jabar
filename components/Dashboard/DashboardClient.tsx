@@ -7,7 +7,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="p-4">
-      <h1 className="font-bold text-4xl">Dashboard</h1>
+      <h1 className="font-bold text-4xl">Dashboard Admin</h1>
       <div className="mt-4">
         <CardHome />
       </div>

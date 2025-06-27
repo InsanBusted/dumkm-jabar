@@ -1,14 +1,14 @@
-import Detail from '@/components/About/Detail/page';
-import VisiMisi from '@/components/About/VisiMisi/page';
-import Footer from '@/components/Footer/page';
-import Header from '@/components/Header/page';
-import Jumbotron from '@/components/Jumbotron/page';
-import React from 'react'
+import Detail from "@/components/About/Detail/page";
+import VisiMisi from "@/components/About/VisiMisi/page";
+import Footer from "@/components/Footer/page";
+import HeaderUtama from "@/components/HeaderUtama";
+import Jumbotron from "@/components/Jumbotron/page";
+import React from "react";
 
 const Tentang = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
+      <HeaderUtama />
       <main>
         <section className="h-[65vh] xl:h-[60vh]">
           <Jumbotron link="tentang" />
@@ -23,6 +23,6 @@ const Tentang = () => {
       <Footer />
     </div>
   );
-}
+};
 
-export default Tentang
+export default Tentang;

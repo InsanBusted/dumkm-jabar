@@ -6,7 +6,7 @@ import { getAllProduct } from "@/lib/actions/product-action";
 
 export default async function Product() {
   const data = await getAllProduct();
-  console.log(data);
+  // console.log(data);
 
   return (
     <div className="min-h-screen flex flex-col">

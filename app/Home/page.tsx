@@ -10,7 +10,7 @@ const Homepage = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main>
-        <div className="h-[110vh] xl:h-[70vh]">
+        <div className="h-[110vh] xl:h-[100vh]">
           <Hero />
         </div>
         <div className="xl:h-[30vh]">
@@ -19,7 +19,7 @@ const Homepage = () => {
         <div className="h-[160vh] xl:h-[80vh]">
           <About />
         </div>
-        <div className="h-[150vh] xl:h-[90vh]">
+        <div className="h-[150vh] xl:h-[110vh]">
           <Product />
         </div>
       </main>
