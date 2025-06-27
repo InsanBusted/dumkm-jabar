@@ -23,6 +23,8 @@ export default function ProductPage({ data }: Props) {
   const filtered = data.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
   );
+
+  console.log(filtered);
   return (
     <section className="w-[80vw] mx-auto bg-white pt-[3rem]">
       <div className="relative py-5 px-6">
@@ -62,7 +64,7 @@ export default function ProductPage({ data }: Props) {
                  transition-all duration-300 transform hover:translate-y-[-4px] hover:shadow-xl hover:border-transparent"
                 >
                   <CardHeader className="flex flex-col items-start gap-2 px-4 pt-2">
-                    {/* Gambar */}
+                    Gambar
                     <div className="relative w-full h-50 rounded-2xl overflow-hidden">
                       {item.imageUrl ? (
                         <Image
@@ -86,7 +88,7 @@ export default function ProductPage({ data }: Props) {
                   </CardHeader>
                   <CardContent className="px-4 pb-4">
                     <p className="text-sm text-gray-700 mt-2 font-semibold">
-                      {item.name} | {item.umkmId}
+                      {item.name} | {item.umkm.name}
                     </p>
                   </CardContent>
                 </Card>
@@ -97,5 +99,4 @@ export default function ProductPage({ data }: Props) {
       </div>
     </section>
   );
-};
-
+}

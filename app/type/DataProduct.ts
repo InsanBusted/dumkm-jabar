@@ -1,4 +1,3 @@
-
 export type DataProduct = {
   id: string;
   name: string;
@@ -6,6 +5,10 @@ export type DataProduct = {
   deskripsi: string;
   price: number;
   imageUrl?: string;
+  umkm: {
+    id: string;
+    name: string;
+  };
   umkmId: string;
   createdAt: Date;
 };
