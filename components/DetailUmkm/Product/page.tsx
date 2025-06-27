@@ -284,23 +284,35 @@ const Product = ({ products }: ProductProps) => {
               className="min-w-[250px] bg-white flex-shrink-0 cursor-pointer"
               onClick={handleSeeMoreClick}
             >
-              <div className="relative w-full h-[150px] overflow-hidden">
-                <Image
-                  src={item.imageUrl!}
-                  alt={item.name}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover"
-                />
+              <div className="relative w-full h-50 rounded-2xl overflow-hidden">
+                {item.imageUrl ? (
+                  <Image
+                    src={item.imageUrl}
+                    alt={item.name}
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-50 bg-gray-200 flex items-center justify-center text-sm text-gray-500">
+                    No image
+                  </div>
+                )}
               </div>
-              <CardHeader>
-                <CardTitle>{item.name}</CardTitle>
-                <CardDescription>{item.deskripsi}</CardDescription>
-                <p className="text-base font-semibold text-black mt-2">
+              <CardHeader className="p-3">
+                <CardTitle className="text-lg font-semibold">
+                  {item.name}
+                </CardTitle>
+
+                <CardDescription className="text-sm text-gray-600">
+                  {item.deskripsi}
+                </CardDescription>
+
+                <p className="text-base font-semibold text-black">
                   Rp {item.price.toLocaleString("id-ID")}
                 </p>
-                <CardFooter className="text-sm text-gray-500 flex flex-col items-start gap-1 mt-2">
-                  <span>{item.umkm?.name}</span>
+
+                <div className="mt-3 text-sm text-gray-500">
+                  <p>UMKM: {item.umkm?.name}</p>
                   <Link
                     href={`https://wa.me/${item.umkm?.contact}?text=Halo%20saya%20tertarik%20dengan%20product%20kamu`}
                     target="_blank"
@@ -308,7 +320,7 @@ const Product = ({ products }: ProductProps) => {
                   >
                     Hubungi
                   </Link>
-                </CardFooter>
+                </div>
               </CardHeader>
             </Card>
           ))}

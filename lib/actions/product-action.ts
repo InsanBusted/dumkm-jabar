@@ -3,6 +3,7 @@
 import prisma from "../db/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { createProductSchema } from "../validation/formProduct";
+import { DataProduct } from "@/app/type/DataProduct";
 import slugify from "slugify";
 
 export async function addProductAction(formData: FormData) {
@@ -50,7 +51,7 @@ export async function addProductAction(formData: FormData) {
 
   const slug = slugify(validated.data.name, { lower: true, strict: true });
 
-  const existingSlug = await prisma.umkm.findUnique({
+  const existingSlug = await prisma.product.findUnique({
     where: { slug },
   });
   if (existingSlug) {
@@ -103,17 +104,37 @@ export async function getProduct() {
   }
 
   const products = await prisma.product.findMany({
-    where: {
-      umkmId: userUmkm.id,
-    },
-    include: {
-      umkm: true,
-    },
-
-    orderBy: {
-      createdAt: "desc",
-    },
+      include: {
+        umkm: true, 
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
   });
 
   return products;
+}
+
+export async function getAllProduct(): Promise<DataProduct[] | null> {
+  try {
+    const products = await prisma.product.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return products.map((product) => ({
+      id: product.id,
+      name: product.name,
+      slug: product.slug,
+      deskripsi: product.deskripsi,
+      price: product.price,
+      imageUrl: product.imageUrl ?? null,
+      umkmId: product.umkmId,
+      createdAt: product.createdAt,
+      }));
+  } catch (error) {
+    console.error("Prisma Error:", JSON.stringify(error, null, 2));
+    return null;
+  }
 }

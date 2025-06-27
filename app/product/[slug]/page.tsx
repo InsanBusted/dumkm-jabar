@@ -1,16 +1,17 @@
 import Navbar from "@/app/(dashboard)/Navbar";
 import Footer from "@/components/Footer/page";
-import UmkmDetailPage from "./UmkmDetail";
+import ProductDetailPage from "./ProductDetail";
 
 type Props = { params: Promise<{ slug: string }> };
 
-const page = async ({ params }: Props) => {
+
+const Page = async ({ params }: Props) => {
   return (
     <div>
       <Navbar />
       <main>
-        <section className="h-[65vh] xl:h-[60vh]">
-          <UmkmDetailPage params={params} />
+        <section className="min-h-screen pt-10">
+          <ProductDetailPage params={params} />
         </section>
       </main>
       <Footer />
@@ -18,4 +19,4 @@ const page = async ({ params }: Props) => {
   );
 };
 
-export default page;
+export default Page;

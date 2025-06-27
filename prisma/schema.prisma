@@ -42,7 +42,7 @@ model Umkm {
 model Product {
   id        String   @id @default(uuid())
   name      String
-  slug      String     @unique
+  slug      String   @unique
   deskripsi String
   price     Float
   imageUrl  String?
