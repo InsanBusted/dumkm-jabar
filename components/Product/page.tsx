@@ -88,7 +88,9 @@ export default function ProductPage({ data }: Props) {
                   </CardHeader>
                   <CardContent className="px-4 pb-4">
                     <p className="text-sm text-gray-700 mt-2 font-semibold">
+<<<<<<< Updated upstream
                       {item.name} | {item.umkm?.name || "Unknown UMKM"}
+
                     </p>
                   </CardContent>
                 </Card>

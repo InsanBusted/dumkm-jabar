@@ -130,18 +130,17 @@ export async function getAllProduct() {
       },
     });
 
-    return products;
 
-    // return products.map((product) => ({
-    //   id: product.id,
-    //   name: product.name,
-    //   slug: product.slug,
-    //   deskripsi: product.deskripsi,
-    //   price: product.price,
-    //   imageUrl: product.imageUrl ?? "",
-    //   umkmId: product.umkm.name ?? "",
-    //   createdAt: product.createdAt,
-    // }));
+    return products.map((product) => ({
+      id: product.id,
+      name: product.name,
+      slug: product.slug,
+      deskripsi: product.deskripsi,
+      price: product.price,
+      imageUrl: product.imageUrl ?? "",
+      umkm: product.umkm.name,
+      createdAt: product.createdAt,
+    }));
   } catch (error) {
     console.error("Prisma Error:", JSON.stringify(error, null, 2));
     return [];

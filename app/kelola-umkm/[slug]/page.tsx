@@ -43,7 +43,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
   if (!umkm) return notFound();
 
-  const products = await getProduct();
+  const products = await getProduct(umkm.id);
 
   return (
     <div>
