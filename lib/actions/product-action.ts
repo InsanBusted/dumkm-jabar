@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use server";
 
 import prisma from "../db/prisma";
@@ -104,6 +105,9 @@ export async function getProduct() {
   }
 
   const products = await prisma.product.findMany({
+    where: {
+      umkmId: userUmkm.id,
+    },
     include: {
       umkm: true,
     },
@@ -140,6 +144,67 @@ export async function getAllProduct() {
     // }));
   } catch (error) {
     console.error("Prisma Error:", JSON.stringify(error, null, 2));
-    return null;
+    return [];
+  }
+}
+
+export async function updateProductAction(id: string, data: FormData) {
+  try {
+    const updated = await prisma.product.update({
+      where: { id },
+      data: {
+        name: data.get("name") as string,
+        deskripsi: data.get("deskripsi") as string,
+        price: parseFloat(data.get("price") as string),
+        imageUrl: data.get("imageUrl") as string,
+      },
+    });
+
+    return { success: true, data: updated };
+  } catch (error) {
+    return { success: false, error: "Gagal update produk" };
+  }
+}
+
+export async function deleteProductAction(productId: string) {
+  try {
+    const user = await currentUser();
+    if (!user) {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    const email = user.emailAddresses[0]?.emailAddress;
+    if (!email) {
+      return { success: false, error: "Email tidak ditemukan" };
+    }
+
+    const dbUser = await prisma.user.findUnique({ where: { email } });
+    if (!dbUser) {
+      return { success: false, error: "User tidak ditemukan" };
+    }
+
+    const userUmkm = await prisma.umkm.findFirst({
+      where: { userId: dbUser.id },
+    });
+    if (!userUmkm) {
+      return { success: false, error: "UMKM tidak ditemukan" };
+    }
+
+    const product = await prisma.product.findUnique({
+      where: { id: productId },
+    });
+    if (!product || product.umkmId !== userUmkm.id) {
+      return {
+        success: false,
+        error: "Produk tidak ditemukan atau bukan milik Anda",
+      };
+    }
+
+    await prisma.product.delete({ where: { id: productId } });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Gagal menghapus produk:", error);
+    return { success: false, error: "Terjadi kesalahan server" };
   }
 }

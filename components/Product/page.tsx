@@ -24,7 +24,7 @@ export default function ProductPage({ data }: Props) {
     item.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  console.log(filtered);
+  // console.log(filtered);
   return (
     <section className="w-[80vw] mx-auto bg-white pt-[3rem]">
       <div className="relative py-5 px-6">
@@ -88,7 +88,7 @@ export default function ProductPage({ data }: Props) {
                   </CardHeader>
                   <CardContent className="px-4 pb-4">
                     <p className="text-sm text-gray-700 mt-2 font-semibold">
-                      {item.name} | {item.umkm.name}
+                      {item.name} | {item.umkm?.name || "Unknown UMKM"}
                     </p>
                   </CardContent>
                 </Card>

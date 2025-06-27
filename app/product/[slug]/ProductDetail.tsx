@@ -3,7 +3,6 @@ import prisma from "@/lib/db/prisma";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-
 export default async function ProductDetailPage({
   params,
 }: {
@@ -22,7 +21,7 @@ export default async function ProductDetailPage({
       <main>
         <section className="min-h-screen pt-10 p-6 w-[80vw] mx-auto">
           <h1 className="text-2xl font-bold mb-4">{product.name}</h1>
-                <div className="flex flex-col md:flex-row gap-8">
+          <div className="flex flex-col md:flex-row gap-8">
             {product.imageUrl && (
               <div className="flex-shrink-0">
                 <Image
@@ -37,7 +36,7 @@ export default async function ProductDetailPage({
             <div className="flex-grow">
               <p className="text-gray-600">{product.deskripsi}</p>
               <p className="text-gray-600">Harga: {product.price}</p>
-              <p className="text-gray-600">UMKM: {product.umkm}</p>
+              <p className="text-gray-600">UMKM: {product.umkm.name}</p>
             </div>
           </div>
         </section>

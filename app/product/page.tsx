@@ -1,5 +1,3 @@
-// app/product/page.tsx
-
 import Header from "@/components/Header/page";
 import Footer from "@/components/Footer/page";
 import Jumbotron from "@/components/Jumbotron/page";
@@ -8,6 +6,7 @@ import { getAllProduct } from "@/lib/actions/product-action";
 
 export default async function Product() {
   const data = await getAllProduct();
+  console.log(data);
 
   return (
     <div className="min-h-screen flex flex-col">
