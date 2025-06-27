@@ -106,8 +106,7 @@ const Product = ({ products }: ProductProps) => {
     setSubmitSuccess(false);
 
     try {
-      // NOTE: addProductAction di server harus menerima FormData dari client
-      // Di sini kita buat FormData manual karena kita punya data object
+     
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("deskripsi", data.deskripsi);
