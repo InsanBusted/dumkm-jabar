@@ -13,6 +13,9 @@ Gunakan akun berikut untuk login sebagai admin dan mengakses dashboard:
 
 - **Username:** `insanadmin`  
 - **Password:** `insanganteng1`
+- **AKSES URL ADMIN:** `/dashboard`
+
+
 
 > ⚠️ *Hanya untuk keperluan demo. Jangan gunakan di lingkungan produksi tanpa sistem keamanan yang memadai.*
 
