@@ -10,19 +10,17 @@ export default async function Product() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
-      <main>
-        {/* Jumbotron Section */}
-        <section className="h-[65vh] xl:h-[60vh]">
-          <Jumbotron link="Product" />
-        </section>
+  <Header />
+  <main className="flex-grow pt-[5rem]">
+    <section className="h-[65vh] xl:h-[60vh]">
+      <Jumbotron link="Product" />
+    </section>
 
-        {/* Product List Section */}
-        <section className="min-h-screen xl:h-[80vh] px-4">
-          <ProductPage data={data} />
-        </section>
-      </main>
-      <Footer />
-    </div>
+    <section className="px-4 py-10">
+      <ProductPage data={data} />
+    </section>
+  </main>
+  <Footer />
+</div>
   );
 }

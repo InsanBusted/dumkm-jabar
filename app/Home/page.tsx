@@ -19,7 +19,7 @@ const Homepage = () => {
         <div className="h-[160vh] xl:h-[80vh]">
           <About />
         </div>
-        <div className="h-[150vh] xl:h-[110vh]">
+        <div className="h-[120vh] xl:h-[110vh]">
           <Product />
         </div>
       </main>
