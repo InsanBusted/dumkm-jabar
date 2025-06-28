@@ -7,10 +7,13 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Section 1 - Brand */}
           <div>
-            <h1 className="text-xl font-bold mb-2">Bustech</h1>
+            <h1 className="text-xl font-bold mb-2">
+              Etalase Digital UMKM Jawa Barat
+            </h1>
             <p className="text-sm text-gray-300">
-              Busted Technology (Bustech) adalah penyedia layanan pembuatan
-              website profesional untuk kebutuhan bisnis Anda.
+              Ayo daftarkan UMKM Anda sekarang dan manfaatkan kemudahan akses
+              pendataan, dan pengelolaan umkm digital dalam satu platform resmi
+              Jawa Barat!
             </p>
           </div>
 
